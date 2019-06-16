@@ -1,5 +1,5 @@
 # LearningDynamics
-Toolbox for Simulation of Self-Organized Dynamics as well as Learning Dynamics
+Toolbox for Inferring Interaction Laws from Observing Various Self-Organized Dynamics
 1. Examples are used for the paper, Nonparametric inference of interaction laws in systems of agents from trajectory data, link:
 https://arxiv.org/abs/1812.06003
 2. Every main example contains solver_info (used for the numerical integrator), sys_info (contains information regarding the 
