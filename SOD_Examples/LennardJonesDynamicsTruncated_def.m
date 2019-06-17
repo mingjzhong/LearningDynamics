@@ -22,12 +22,12 @@ sys_info.T_f            = 0.2;                                                  
 solver_info.time_span   = [0, sys_info.T_f];                                                        % put it into the time_span vector, always starting from 0
 
 % Observations
-obs_info.L              = 2000;                                                                     % observe (equi-spaced) times
-obs_info.M              = 500;                                                                      % # trajectories with random initial conditions for learning interaction kernel
+obs_info.L              = 100;                                                                      % observe (equi-spaced) times
+obs_info.M              = 1000;                                                                     % # trajectories with random initial conditions for learning interaction kernel
 obs_info.M_rhoT         = 2000;                                                                     % # trajectories with random initial conditions to compute approximate \rho_T
 obs_info.T_L            = sys_info.T_f/2;                                                           % Observations will be up to this time
 obs_info.time_vec       = linspace(1.e-3, obs_info.T_L, obs_info.L);                                % time instances at which discrete observation is made
-obs_info.use_derivative = false;                                                                    % indicator of the availability of derivative data
+obs_info.use_derivative = true;                                                                     % indicator of the availability of derivative data
 obs_info.hist_num_bins  = 10000;                                                                    % number of bins for estimating \rho^L_T for all three different interactions
 obs_info.obs_noise      = 0.0;
 obs_info.mu_trajnoise   = @(traj,sigma) trajUnifNoiseMultiplicative( traj, sigma );
