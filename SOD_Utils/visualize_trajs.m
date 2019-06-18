@@ -5,14 +5,17 @@ function visualize_trajs(learningOutput, sys_info, sys_info_approx, obs_info, IC
 
 % go through the Initial Conditions from the training data set
 trajs                   = cell(1, 4);
-result                  = construct_and_compute_traj(plot_info.solver_info, sys_info, sys_info_approx, ICs, obs_info.T_L, obs_info.L);
+result                  = construct_and_compute_traj(plot_info.solver_info, sys_info, sys_info_approx, obs_info, ICs);
 trajs{1}                = result.traj_true;
 trajs{2}                = result.traj_hat;
 time_vec                = result.time_vec;
-if sys_info.d == 2
-  if isfield(obs_info, 'obs_noise') && obs_info.obs_noise > 0 && ~plot_info.for_larger_N 
-    traj_noise          = squeeze(learningOutput{1}.obs_data.x(1 : sys_info.d * sys_info.N, :, result.m));            
-    visualize_traj_2D_wnoise(traj_noise, result.traj_true, result.traj_hat, time_vec, sys_info, obs_info, plot_info);
+if sys_info.d == 2 
+  if strcmp(sys_info.name, 'PredatorPrey1stOrder') || strcmp(sys_info.name, 'PredatorPrey1stOrderSplines') ...
+      || strcmp(sys_info.name, 'PredatorPrey2ndOrder')
+    if isfield(obs_info, 'obs_noise') && obs_info.obs_noise > 0 && ~plot_info.for_larger_N 
+      traj_noise        = squeeze(learningOutput{1}.obs_data.x(1 : sys_info.d * sys_info.N, :, result.m));            
+      visualize_traj_2D_wnoise(traj_noise, result.traj_true, result.traj_hat, time_vec, sys_info, obs_info, plot_info);
+    end
   end
 end
 fprintf('\n================================================================================');
@@ -29,8 +32,8 @@ else
   fprintf(' For Larger N');
   fprintf('\nTraj. Err. with an initial condition randomly chosen:');
 end
-fprintf('\n  sup-norm on [%10.4e,%10.4e] = %10.4e.', obs_info.time_vec(1),            obs_info.T_L,                       result.trajErr);
-fprintf('\n  sup-norm on [%10.4e,%10.4e] = %10.4e.', obs_info.T_L, plot_info.solver_info.time_span(2), result.trajErrfut);
+fprintf('\n  sup-norm on [%10.4e,%10.4e] = %10.4e.', obs_info.time_vec(1), obs_info.T_L,                       result.trajErr);
+fprintf('\n  sup-norm on [%10.4e,%10.4e] = %10.4e.', obs_info.T_L,         plot_info.solver_info.time_span(2), result.trajErrfut);
 % randomly pick another initial data
 if plot_info.for_larger_N
   ICs                   = ICs(:, result.m + 1 : end);
@@ -41,7 +44,7 @@ else
     ICs                 = generateICs(obs_info.M, sys_info);
   end
 end
-result                  = construct_and_compute_traj(plot_info.solver_info, sys_info, sys_info_approx, ICs, obs_info.T_L, obs_info.L);
+result                  = construct_and_compute_traj(plot_info.solver_info, sys_info, sys_info_approx, obs_info, ICs);
 trajs{3}                = result.traj_true;
 trajs{4}                = result.traj_hat;
 if isfield(plot_info, 'for_larger_N') && plot_info.for_larger_N
@@ -53,8 +56,8 @@ else
   chosen_dynamics{4}    = result.dynamicshat;  
 end
 fprintf('\nTraj. Err. with another initial condition randomly chosen:');
-fprintf('\n  sup-norm on [%10.4e,%10.4e] = %10.4e.', obs_info.time_vec(1),            obs_info.T_L,                       result.trajErr);
-fprintf('\n  sup-norm on [%10.4e,%10.4e] = %10.4e.', obs_info.T_L, plot_info.solver_info.time_span(2), result.trajErrfut);
+fprintf('\n  sup-norm on [%10.4e,%10.4e] = %10.4e.', obs_info.time_vec(1), obs_info.T_L,                       result.trajErr);
+fprintf('\n  sup-norm on [%10.4e,%10.4e] = %10.4e.', obs_info.T_L,         plot_info.solver_info.time_span(2), result.trajErrfut);
 % put the trajectories on one single window for comparison
 switch sys_info.d
   case 1

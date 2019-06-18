@@ -25,7 +25,7 @@ trajfut                     = zeros(sys_var_len, obs_info.L, M);
 failtraj                    = zeros(1,M,'logical');
 obs_info_Ltest              = obs_info;
 obs_info_Ltest.L            = obs_info.L;
-obs_info_Ltest.time_vec     = linspace(0,obs_info.T_L,obs_info_Ltest.L);
+obs_info_Ltest.time_vec     = linspace(obs_info.time_vec(1),obs_info.T_L,obs_info_Ltest.L);
 obs_info_Ltest_fut          = obs_info_Ltest;
 obs_info_Ltest_fut.time_vec = linspace(obs_info.T_L,solver_info.time_span(2),obs_info_Ltest.L);
 
