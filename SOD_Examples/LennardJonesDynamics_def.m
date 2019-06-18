@@ -29,7 +29,7 @@ obs_info.T_L            = 0.01;                                                 
 obs_info.time_vec       = linspace(1.e-3, obs_info.T_L, obs_info.L);                                % time instances at which discrete observation is made
 obs_info.use_derivative = true;                                                                     % indicator of the availability of derivative data
 obs_info.hist_num_bins  = 10000;                                                                    % number of bins for estimating \rho^L_T for all three different interactions
-obs_info.obs_noise      = 0.1;
+obs_info.obs_noise      = 0.001;
 obs_info.mu_trajnoise   = @(traj,sigma) trajUnifNoiseMultiplicative( traj, sigma );
 obs_info.mu_dtrajnoise  = @(traj,sigma) trajUnifNoiseMultiplicative( traj, sigma );
 
