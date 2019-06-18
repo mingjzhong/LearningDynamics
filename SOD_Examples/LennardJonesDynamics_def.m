@@ -16,7 +16,9 @@ sys_info.kappa          = 1;                                                    
 sys_info.RE             = [];                                                                       % regulation on collective influence on x
 sys_info.has_noise      = false;                                                                    % no stochastic noise
 sys_info.mu0            = @() LJ_init_config([], sys_info.d, sys_info.N, 2);                        % distribution of initial conditions
-sys_info.T_f            = 0.5;                                                                      % the time for integration, t = T_f should be (most likely) for the system to reach steady state
+sys_info.T_f            = 0.5; 
+sys_info.T_0            =0.001;
+% the time for integration, t = T_f should be (most likely) for the system to reach steady state
 
 % ODE solver
 solver_info.time_span   = [0, sys_info.T_f];                                                        % put it into the time_span vector, always starting from 0
@@ -26,7 +28,7 @@ obs_info.L              = 91;                                                   
 obs_info.M              = 200;                                                                     % # trajectories with random initial conditions for learning interaction kernel
 obs_info.M_rhoT         = 2000;                                                                     % # trajectories with random initial conditions to compute approximate \rho_T
 obs_info.T_L            = 0.01;                                                           % Observations will be up to this time
-obs_info.time_vec       = linspace(1.e-3, obs_info.T_L, obs_info.L);                                % time instances at which discrete observation is made
+obs_info.time_vec       = linspace(sys_info.T_0, obs_info.T_L, obs_info.L);                                % time instances at which discrete observation is made
 obs_info.use_derivative = true;                                                                     % indicator of the availability of derivative data
 obs_info.hist_num_bins  = 10000;                                                                    % number of bins for estimating \rho^L_T for all three different interactions
 obs_info.obs_noise      = 0.001;
