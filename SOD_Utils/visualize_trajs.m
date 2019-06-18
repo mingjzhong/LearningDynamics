@@ -29,7 +29,7 @@ else
   fprintf(' For Larger N');
   fprintf('\nTraj. Err. with an initial condition randomly chosen:');
 end
-fprintf('\n  sup-norm on [%10.4e,%10.4e] = %10.4e.', 0,            obs_info.T_L,                       result.trajErr);
+fprintf('\n  sup-norm on [%10.4e,%10.4e] = %10.4e.', obs_info.time_vec(1),            obs_info.T_L,                       result.trajErr);
 fprintf('\n  sup-norm on [%10.4e,%10.4e] = %10.4e.', obs_info.T_L, plot_info.solver_info.time_span(2), result.trajErrfut);
 % randomly pick another initial data
 if plot_info.for_larger_N
@@ -53,7 +53,7 @@ else
   chosen_dynamics{4}    = result.dynamicshat;  
 end
 fprintf('\nTraj. Err. with another initial condition randomly chosen:');
-fprintf('\n  sup-norm on [%10.4e,%10.4e] = %10.4e.', 0,            obs_info.T_L,                       result.trajErr);
+fprintf('\n  sup-norm on [%10.4e,%10.4e] = %10.4e.', obs_info.time_vec(1),            obs_info.T_L,                       result.trajErr);
 fprintf('\n  sup-norm on [%10.4e,%10.4e] = %10.4e.', obs_info.T_L, plot_info.solver_info.time_span(2), result.trajErrfut);
 % put the trajectories on one single window for comparison
 switch sys_info.d
