@@ -11,9 +11,10 @@ clabels                  = cell(1, 3 * K);
 cticks                   = zeros(1, 3 * K);
 % setup some default values
 T_f                      = time_vec(end);
-t_ticks                  = [0, T, T_f];
+T_0                      = time_vec(1);
+t_ticks                  = [T_0, T, T_f];
 c                        = ceil(T_f/T);
-set_labels               = {'0', 'T', sprintf('%dT', c)};
+set_labels               = {num2str(T_0), 'T', sprintf('%dT', c)};
 color_shift              = T_f * 0.15;
 % due to the number of available (preset) color maps, we put in a check
 if K > length(cmap_names)
