@@ -66,8 +66,14 @@ for ind = 1 : 4
     m_C1                       = dyn_markers(1 : 2 : end - 1, :);
     m_C2                       = dyn_markers(2 : 2 : end,     :);
   end
-  for k = 1 : sys_info.K
-    agents_Ck                  = find(sys_info.type_info == k);
+  the_sys_info                 = sys_info;
+  if strcmp(sys_info.name, 'LennardJonesDynamics') || strcmp(sys_info.name, 'LennardJonesDynamicsTruncated')
+    if ind == 3 || ind == 4
+      the_sys_info             = plot_info.sys_info_Ntransfer;
+    end
+  end
+  for k = 1 : the_sys_info.K
+    agents_Ck                  = find(the_sys_info.type_info == k);
     N_k                        = length(agents_Ck);
     for agent_ind = 1 : N_k
       agent                    = agents_Ck(agent_ind);
@@ -83,8 +89,8 @@ for ind = 1 : 4
       else
         p_handle               = patch([c1_at_t, NaN], [c2_at_t, NaN], [c_vecs{k}, NaN], 'EdgeColor', ...
           'interp', 'LineStyle', '-', 'LineWidth', plot_info.traj_line_width);
-        if strcmp(sys_info.name, 'PredatorPrey1stOrder') || strcmp(sys_info.name, 'PredatorPrey2ndOrder') ...
-            || strcmp(sys_info.name, 'PredatorPrey1stOrderSplines')
+        if strcmp(the_sys_info.name, 'PredatorPrey1stOrder') || strcmp(the_sys_info.name, 'PredatorPrey2ndOrder') ...
+            || strcmp(the_sys_info.name, 'PredatorPrey1stOrderSplines')
           if k == 1, set(p_handle, 'EdgeAlpha', 0.25); end
         end
         if k == 1 && agent_ind == 1, hold on; end

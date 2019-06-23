@@ -19,5 +19,4 @@ if ~isempty(sys_info_Ntransfer)
   plot_info.for_larger_N = true;
   visualize_trajs(learningOutput, sys_info_Ntransfer, learningOutput{1}.syshatsmooth_info_Ntransfer, obs_info, learningOutput{1}.y_init_Ntransfer, plot_info);
 end
-
-return
+end

@@ -10,9 +10,10 @@ fine_time_vec             = linspace(obs_info.time_vec(1), plot_info.solver_info
 fine_time_vec             = insert_time_vec(fine_time_vec, obs_info.T_L);
 coarse_time_vec           = linspace(fine_time_vec(1), fine_time_vec(end), 20);
 coarse_time_vec           = insert_time_vec(coarse_time_vec, obs_info.T_L);
-block_size                = sys_info.N * sys_info.d;
 for ind = 1 : length(chosen_dynamics)
   traj                    = deval(chosen_dynamics{ind}, fine_time_vec);
+  if sys_info.ode_order == 1,     block_size = size(traj, 1);
+  elseif sys_info.ode_order == 2, block_size = size(traj, 1)/2; end
   if ind == 1, y_init = traj(:, 1); end
   trajs{ind}              = traj(1 : block_size, :);
   traj                    = deval(chosen_dynamics{ind}, coarse_time_vec); 
