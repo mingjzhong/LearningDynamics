@@ -103,7 +103,7 @@ for k1 = 1 : K
     axesHandle.FontSize              = plot_info.tick_font_size;
     axesHandle.FontName              = plot_info.tick_font_name;     
     xlabel('$r$ (pairwise distance)',           'Interpreter', 'latex', 'FontSize', plot_info.axis_font_size, 'FontName', plot_info.axis_font_name);
-    ylabel('$\dot{r}$ (pairwise speed)',      'Interpreter', 'latex', 'FontSize', plot_info.axis_font_size, 'FontName', plot_info.axis_font_name);
+    ylabel('$\dot{r}$',      'Interpreter', 'latex', 'FontSize', plot_info.axis_font_size, 'FontName', plot_info.axis_font_name);
     colormap(gca, 'jet');
     handleAxes((k1 - 1) * 3 + 3, k2) = axesHandle;
   end

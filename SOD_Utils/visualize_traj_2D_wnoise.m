@@ -17,7 +17,11 @@ trajs{1}         = traj_true;
 trajs{2}         = traj_hat;
 trajs{3}         = traj_noise;
 % prepare the color items
-color_output     = construct_color_items(sys_info.K, obs_info.T_L, time_vec);
+if plot_info.for_PNAS
+  color_output   = construct_color_items(sys_info.K, obs_info.T_L, plot_info.coarse_time_vec);
+else
+  color_output   = construct_color_items(sys_info.K, obs_info.T_L, time_vec);
+end
 cmap             = color_output.cmap;
 c_vecs           = color_output.c_vecs;
 clabels          = color_output.clabels;
@@ -52,27 +56,50 @@ missing_len      = length(time_vec) - T_loc;
 for ind = 1 : 3
   X_c1           = X_c1s{ind};
   X_c2           = X_c2s{ind};
+  if plot_info.for_PNAS && ind < 3
+    dyn_markers  = plot_info.dyn_markers{ind};
+    m_C1         = dyn_markers(1 : 2 : end - 1, :);
+    m_C2         = dyn_markers(2 : 2 : end,     :);
+  end  
   for k = 1 : sys_info.K
     agents_Ck    = find(sys_info.type_info == k);
     N_k          = length(agents_Ck);
     for agent_ind = 1 : N_k
       agent      = agents_Ck(agent_ind);
-      c1_at_t    = X_c1(agent, :);
-      c2_at_t    = X_c2(agent, :);
       if ind == 3
-        c1_at_t  = [c1_at_t NaN * ones(1, missing_len)];
-        c2_at_t  = [c2_at_t NaN * ones(1, missing_len)];
+        c1_at_t  = [X_c1(agent, :), NaN * ones(1, missing_len)];
+        c2_at_t  = [X_c2(agent, :), NaN * ones(1, missing_len)];
+      else
+        c1_at_t    = X_c1(agent, :);
+        c2_at_t    = X_c2(agent, :);       
       end
-      p_handle   = patch([c1_at_t, NaN], [c2_at_t, NaN], [c_vecs{k}, NaN], 'EdgeColor', 'interp', 'LineStyle', line_styles{ind}, 'LineWidth', plot_info.traj_line_width);
-      if ind == 3, set(p_handle, 'EdgeAlpha', 0.2); end
-      if k == 1 && agent_ind == 1, hold on; end
+      if plot_info.for_PNAS
+        if ind < 3
+          plot(c1_at_t, c2_at_t, 'LineWidth', plot_info.traj_line_width, 'Color', 'k', ...
+            'LineStyle', plot_info.line_styles{ind});
+          if k == 1 && agent_ind == 1, hold on; end
+          mC1_at_t               = m_C1(agent, :);
+          mC2_at_t               = m_C2(agent, :);
+          scatter(mC1_at_t, mC2_at_t, plot_info.marker_size, c_vecs{k}', 'filled', plot_info.marker_style{k});        
+        else
+          s_handle = scatter(c1_at_t, c2_at_t, plot_info.marker_size, 'k', 'filled', 's');
+          s_handle.MarkerFaceAlpha = 0.2;
+        end
+      else
+        p_handle   = patch([c1_at_t, NaN], [c2_at_t, NaN], [c_vecs{k}, NaN], 'EdgeColor', 'interp', 'LineStyle', line_styles{ind}, 'LineWidth', plot_info.traj_line_width);
+        if ind == 3, set(p_handle, 'EdgeAlpha', 0.2); end
+        if k == 1 && agent_ind == 1, hold on; end       
+      end
     end
   end
   if ind ~= 3
-    plot(X_c1(:, T_loc), X_c2(:, T_loc), 'o', 'MarkerSize', plot_info.T_L_marker_size, 'MarkerEdgeColor', 'k', 'MarkerFaceColor', 'k');
+     scatter(X_c1(:, T_loc), X_c2(:, T_loc), plot_info.T_L_marker_size, 'k', 'filled', 'o');
   end
-  l_handles(ind) = plot(NaN, NaN, ['k' line_styles{ind}]);                            % dummy lines for legend
-  hold off;
+  if ind < 3
+    l_handles(ind)   = plot(NaN, NaN, ['k' line_styles{ind}]);                                      % dummy lines for legend
+  else
+    l_handles(ind)   = s_handle;
+  end
 end
 axesHandle           = gca;
 axis([x_min x_max y_min y_max]);
