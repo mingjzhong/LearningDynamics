@@ -49,6 +49,8 @@ y_max                          = max(y_max);
 handleAxes                     = gobjects(2);
 T_loc                          = find(time_vec == obs_info.T_L);
 switch sys_info.name
+ case 'LennardJonesDynamics'
+    leg_loc                    = 'SouthEast';
   case 'PredatorPrey1stOrder'
     leg_loc                    = 'SouthEast';
   case 'PredatorPrey2ndOrder'
