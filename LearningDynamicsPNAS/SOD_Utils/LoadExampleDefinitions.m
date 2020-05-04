@@ -31,6 +31,7 @@ plot_info.rhotscalingdownfactor    = 1;
 plot_info.showplottitles           = false;
 plot_info.display_phihat           = false;
 plot_info.display_interpolant      = true;
+plot_info.for_PNAS                 = false;
 plot_info.T_L_marker_size          = plot_info.traj_line_width;
 
 % for learn_info
