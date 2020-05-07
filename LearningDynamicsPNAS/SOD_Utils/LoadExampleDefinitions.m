@@ -32,6 +32,7 @@ plot_info.showplottitles           = false;
 plot_info.display_phihat           = false;
 plot_info.display_interpolant      = true;
 plot_info.for_PNAS                 = false;
+plot_info.line_styles              = {'-', '-.', '--', ':'};                                        % traj. line styles
 plot_info.T_L_marker_size          = plot_info.traj_line_width;
 
 % for learn_info
