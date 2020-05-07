@@ -58,6 +58,7 @@ switch sys_info.name
   case 'PhototaxisDynamics'
     leg_loc                    = 'NorthWest';
   otherwise
+    leg_loc                    = 'Best';
 end
 for ind = 1 : 4
   subplot(2, 2, ind); 
