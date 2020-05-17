@@ -1,0 +1,29 @@
+function f_simple = construct_interpolant_2D(f, knots, degree)
+% function f_simple = construct_interpolant_2D(f, knots, degree)
+
+% (C) M. Zhong
+
+% the first dimension
+r_pts            = get_sample_points_for_interpolant(knots{1}, degree(1));
+% the second dimension
+s_pts            = get_sample_points_for_interpolant(knots{2}, degree(2));
+% form the 2D grid, use only ndgrid due to the ordering issue
+[R, S]           = ndgrid(r_pts, s_pts);  
+extra_method     = 'nearest';
+theDegree        = min(degree);
+switch theDegree
+  case 0
+    inter_method = 'nearest'; % discontinuous
+  case 1
+    inter_method = 'linear';  % C^0
+  case 2
+    inter_method = 'makima';  % C^1
+  otherwise
+    inter_method = 'spline';  % C^2
+end
+try
+  f_simple       = griddedInterpolant(R, S, f(R, S), inter_method, extra_method);
+catch
+  f_simple       = f;
+end
+end
