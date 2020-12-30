@@ -1,0 +1,59 @@
+function [Mean_Traj_errors,Std_Traj_errors]=displayTrajErrs( learningOutput, obs_info, solver_info )
+
+%(c) M. Magigoni and M. Zhong; Modified by Sui Tang
+% Mean_errors: 6 x 2
+% col 1-2 : Trajectory errors over 10 learning trails  [T_0, T_L]  [T_L, T_f]
+% row 1-2, 3-4, 5-6 : with training initial condition / with new initial condtions/ large N
+% 
+%Std_errors: 6 x 2 
+%col 1-2 : Trajectory errors over 10 learning trails  [T_0, T_L]  [T_L, T_f]
+%row 1-2, 3-4, 5-6 : with training initial condition / with new initial condtions/ large N
+
+Mean_Traj_errors=zeros(6,2);
+Std_Traj_errors=zeros(6,2);
+Mean_Traj_errors(1,:)=[mean(cellfun(@(x) mean(x.trajErr.sup),     learningOutput)), std(cellfun(@(x) mean(x.trajErr.sup),     learningOutput))];
+Mean_Traj_errors(2,:)=[mean(cellfun(@(x) mean(x.trajErr.sup_fut),     learningOutput)), std(cellfun(@(x) mean(x.trajErr.sup_fut),     learningOutput))];
+Mean_Traj_errors(3,:)=[mean(cellfun(@(x) mean(x.trajErr_new.sup),     learningOutput)), std(cellfun(@(x) mean(x.trajErr_new.sup),     learningOutput))];
+Mean_Traj_errors(4,:)=[mean(cellfun(@(x) mean(x.trajErr_new.sup_fut),     learningOutput)), std(cellfun(@(x) mean(x.trajErr_new.sup_fut),     learningOutput))];
+%Mean_Traj_errors(5,:)=[mean(cellfun(@(x) mean(x.trajErr_new_Ntransfer.sup),     learningOutput)), std(cellfun(@(x) mean(x.trajErr_new_Ntransfer.sup),     learningOutput))];
+%Mean_Traj_errors(6,:)=[mean(cellfun(@(x) mean(x.trajErr_new_Ntransfer.sup_fut),     learningOutput)), std(cellfun(@(x) mean(x.trajErr_new_Ntransfer.sup_fut),     learningOutput))];
+
+Std_Traj_errors(1,:)=[mean(cellfun(@(x) std(x.trajErr.sup),     learningOutput)), std(cellfun(@(x) std(x.trajErr.sup),     learningOutput))];
+Std_Traj_errors(2,:)=[mean(cellfun(@(x) std(x.trajErr.sup_fut),     learningOutput)), std(cellfun(@(x) std(x.trajErr.sup_fut),     learningOutput))];
+Std_Traj_errors(3,:)=[mean(cellfun(@(x) std(x.trajErr_new.sup),     learningOutput)), std(cellfun(@(x) std(x.trajErr_new.sup),     learningOutput))];
+Std_Traj_errors(4,:)=[mean(cellfun(@(x) std(x.trajErr_new.sup_fut),     learningOutput)), std(cellfun(@(x) std(x.trajErr_new.sup_fut),     learningOutput))];
+%Std_Traj_errors(5,:)=[mean(cellfun(@(x) std(x.trajErr_new_Ntransfer.sup),     learningOutput)), std(cellfun(@(x) std(x.trajErr_new_Ntransfer.sup),     learningOutput))];
+%Std_Traj_errors(6,:)=[mean(cellfun(@(x) std(x.trajErr_new_Ntransfer.sup_fut),     learningOutput)), std(cellfun(@(x) std(x.trajErr_new_Ntransfer.sup_fut),     learningOutput))];
+
+
+% 
+% 
+
+
+fprintf(['\n------------------- Trajectory accuracies, same IC''s as training data:' ...
+  '\n\tsup-norm  on [%10.4e,%10.4e], mean = %10.4e%c%10.4e, std = %10.4e%c%10.4e' ...
+  '\n\tsup-norm  on [%10.4e,%10.4e], mean = %10.4e%c%10.4e, std = %10.4e%c%10.4e'], ...
+  0,            obs_info.T_L,             mean(cellfun(@(x) mean(x.trajErr.sup),     learningOutput)), 177, std(cellfun(@(x) mean(x.trajErr.sup),     learningOutput)), ...
+                                          mean(cellfun(@(x) std( x.trajErr.sup),     learningOutput)), 177, std(cellfun(@(x) std( x.trajErr.sup),     learningOutput)), ...
+  obs_info.T_L, solver_info.time_span(2), mean(cellfun(@(x) mean(x.trajErr.sup_fut), learningOutput)), 177, std(cellfun(@(x) mean(x.trajErr.sup_fut), learningOutput)), ...
+                                          mean(cellfun(@(x) std( x.trajErr.sup_fut), learningOutput)), 177, std(cellfun(@(x) std( x.trajErr.sup_fut), learningOutput)));
+
+fprintf(['\n------------------- Trajectory accuracies, new IC''s:' ...
+  '\n\tsup-norm  on [%10.4e,%10.4e], mean = %10.4e%c%10.4e, std = %10.4e%c%10.4e' ...
+  '\n\tsup-norm  on [%10.4e,%10.4e], mean = %10.4e%c%10.4e, std = %10.4e%c%10.4e'], ...
+  0,            obs_info.T_L,             mean(cellfun(@(x) mean(x.trajErr_new.sup),     learningOutput)), 177, std(cellfun(@(x) mean(x.trajErr_new.sup),     learningOutput)), ...
+                                          mean(cellfun(@(x) std( x.trajErr_new.sup),     learningOutput)), 177, std(cellfun(@(x) std( x.trajErr_new.sup),     learningOutput)), ...
+  obs_info.T_L, solver_info.time_span(2), mean(cellfun(@(x) mean(x.trajErr_new.sup_fut), learningOutput)), 177, std(cellfun(@(x) mean(x.trajErr_new.sup_fut), learningOutput)), ...
+                                          mean(cellfun(@(x) std( x.trajErr_new.sup_fut), learningOutput)), 177, std(cellfun(@(x) std( x.trajErr_new.sup_fut), learningOutput)));
+                                       
+if isfield(learningOutput{1}, 'trajErr_new_Ntransfer')
+  fprintf(['\n------------------- Trajectory accuracies, larger N:' ...
+    '\n\tsup-norm  on [%10.4e,%10.4e], mean = %10.4e%c%10.4e, std = %10.4e%c%10.4e' ...
+    '\n\tsup-norm  on [%10.4e,%10.4e], mean = %10.4e%c%10.4e, std = %10.4e%c%10.4e'], ...
+    0,            obs_info.T_L,             mean(cellfun(@(x) mean(x.trajErr_new_Ntransfer.sup),     learningOutput)), 177, std(cellfun(@(x) mean(x.trajErr_new_Ntransfer.sup),     learningOutput)), ...
+                                            mean(cellfun(@(x) std( x.trajErr_new_Ntransfer.sup),     learningOutput)), 177, std(cellfun(@(x) std( x.trajErr_new_Ntransfer.sup),     learningOutput)), ...
+    obs_info.T_L, solver_info.time_span(2), mean(cellfun(@(x) mean(x.trajErr_new_Ntransfer.sup_fut), learningOutput)), 177, std(cellfun(@(x) mean(x.trajErr_new_Ntransfer.sup_fut), learningOutput)), ...
+                                            mean(cellfun(@(x) std( x.trajErr_new_Ntransfer.sup_fut), learningOutput)), 177, std(cellfun(@(x) std( x.trajErr_new_Ntransfer.sup_fut), learningOutput)));
+end
+
+  end
