@@ -5,8 +5,10 @@ function Example = OpinionDynamicsDisc_def()
 % System
 sys_info.name            = 'OpinionDynamicsDisc';                                                   % name of the dynamics
 sys_info.d               = 1;                                                                       % dimension for the state vector (in this case, opinion vector)
-sys_info.N               = 20;                                                                      % # of agents
-sys_info.phiE            = {@(r) OD_phiE(r, 1)};                                                    % energy based interaction
+sys_info.N               = 100;                                                                     % # of agents
+% choice for different phi for OD
+phi_choice               = 1;                                                                       % leads to (more likely) consensus
+sys_info.phiE            = {@(r) OD_phiE(r, phi_choice)};                                           % energy based interaction
 sys_info.K               = 1;                                                                       % # of types
 sys_info.ode_order       = 1;                                                                       % order of the ODE system
 sys_info.type_info       = ones(1, sys_info.N);                                                     % function mapping agent index to its type index
