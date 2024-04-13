@@ -5,7 +5,7 @@ function Example = AnticipationDynamics_2ndMC_def()
 % System
 sys_info.name            = 'AnticipationDynamics';
 sys_info.d               = 2;                                                                       % the dimension for the opinion (state) vecor
-sys_info.N               = 20;                                                                      % the number of agents
+sys_info.N               = 40;                                                                      % the number of agents
 energy_kind              = 3;                                                                       % choose a linear energy             
 [U_prime, U_dprime, T_f] = AD_get_energy_and_T_f(energy_kind);
 tau                      = 0.1;
